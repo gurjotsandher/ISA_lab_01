@@ -1,9 +1,10 @@
+// global constants
 const notekey = "notekey"
 const containerID = "readerBlockContainer";
 const lastSavedID = "lastSavedText";
 const lastSavedText = "Last read  ";
 
-// object contructor for noteblock
+// object contructor for reader noteblock
 function ReaderNoteBlock(id, text) {
     this.div = document.createElement("div");
     this.textArea = document.createElement("textarea");
@@ -14,6 +15,7 @@ function ReaderNoteBlock(id, text) {
     document.getElementById(containerID).appendChild(this.div);
 }
 
+// formats the date to 12 hour clock, no seconds
 function prettyDate2(time){
     // source:https://stackoverflow.com/questions/19407305/how-to-show-only-hours-and-minutes-from-javascript-date-tolocaletimestring
     var date = new Date(parseInt(time));
@@ -21,6 +23,7 @@ function prettyDate2(time){
     return localeSpecificTime.replace(/:\d+ /, ' ');
 }
 
+// sets up reading interval
 if(typeof(Storage) !== "undefined"){
     setInterval(function () {
         const array = localStorage.getItem(notekey);
@@ -29,7 +32,6 @@ if(typeof(Storage) !== "undefined"){
         parsedArray.forEach(noteObj => {
             new ReaderNoteBlock(noteObj.note_id, noteObj.text);
         });
-        console.log(JSON.parse(array));
         document.getElementById(lastSavedID).innerText = lastSavedText + prettyDate2(Date.now());
     }, 2000);
 } 

@@ -14,7 +14,7 @@ function uuidv4() {
     });
 }
 
-// object contructor for noteblock
+// object contructor for writernoteblock
 function WriterNoteBlock() {
     this.id = uuidv4();
     this.div = document.createElement("div");
@@ -22,7 +22,7 @@ function WriterNoteBlock() {
     this.btn = document.createElement("button");
     this.btn.innerText = "remove";
 
-    // Method to delete this noe from dom and local storage.
+    // Method to delete this note from dom and local storage.
     this.remove = function() {
         notesArray.splice(notesArray.indexOf(this), 1);
         document.getElementById(containerID).removeChild(this.parentNode);
@@ -44,6 +44,7 @@ else {
     alert("Web Storage is not supported by this browser..")
 }
 
+// formats the date to 12 hour clock, no seconds
 function prettyDate2(time){
     // source:https://stackoverflow.com/questions/19407305/how-to-show-only-hours-and-minutes-from-javascript-date-tolocaletimestring
     var date = new Date(parseInt(time));
@@ -51,6 +52,7 @@ function prettyDate2(time){
     return localeSpecificTime.replace(/:\d+ /, ' ');
 }
 
+// sets up writing interval
 function saveNotesToLocalStorage() {
     let toStoreArray = [];
     notesArray.forEach(element => {
