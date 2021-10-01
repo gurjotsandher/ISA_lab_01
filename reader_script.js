@@ -3,24 +3,18 @@ const notekey = "notekey"
 const containerID = "readerBlockContainer";
 const lastSavedID = "lastSavedText";
 const lastSavedText = "Last read  ";
+const readerNoteBlockClass = "noteBlock";
 
 // object contructor for reader noteblock
 function ReaderNoteBlock(id, text) {
     this.div = document.createElement("div");
+    this.div.className = readerNoteBlockClass;
     this.textArea = document.createElement("textarea");
     this.textArea.value = text;
     this.textArea.readOnly = true;
     this.id = id;
     this.div.appendChild(this.textArea);
     document.getElementById(containerID).appendChild(this.div);
-}
-
-// formats the date to 12 hour clock, no seconds
-function prettyDate2(time){
-    // source:https://stackoverflow.com/questions/19407305/how-to-show-only-hours-and-minutes-from-javascript-date-tolocaletimestring
-    var date = new Date(parseInt(time));
-    var localeSpecificTime = date.toLocaleTimeString();
-    return localeSpecificTime.replace(/:\d+ /, ' ');
 }
 
 // sets up reading interval
@@ -32,7 +26,8 @@ if(typeof(Storage) !== "undefined"){
         parsedArray.forEach(noteObj => {
             new ReaderNoteBlock(noteObj.note_id, noteObj.text);
         });
-        document.getElementById(lastSavedID).innerText = lastSavedText + prettyDate2(Date.now());
+        let formattedTime = time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+        document.getElementById(lastSavedID).innerText = lastSavedText + formattedTime;
     }, 2000);
 } 
 else {

@@ -4,6 +4,7 @@ const notesArray = [];
 const lastSavedID = "lastSavedText";
 const containerID = "writerBlockContainer";
 const lastSavedText = "Last saved ";
+const writerNoteBlockClass = "noteBlock"
 
 // generates an UID
 function uuidv4() {
@@ -18,6 +19,7 @@ function uuidv4() {
 function WriterNoteBlock() {
     this.id = uuidv4();
     this.div = document.createElement("div");
+    this.div.className = writerNoteBlockClass;
     this.textArea = document.createElement("textarea");
     this.btn = document.createElement("button");
     this.btn.innerText = "remove";
@@ -44,14 +46,6 @@ else {
     alert("Web Storage is not supported by this browser..")
 }
 
-// formats the date to 12 hour clock, no seconds
-function prettyDate2(time){
-    // source:https://stackoverflow.com/questions/19407305/how-to-show-only-hours-and-minutes-from-javascript-date-tolocaletimestring
-    var date = new Date(parseInt(time));
-    var localeSpecificTime = date.toLocaleTimeString();
-    return localeSpecificTime.replace(/:\d+ /, ' ');
-}
-
 // sets up writing interval
 function saveNotesToLocalStorage() {
     let toStoreArray = [];
@@ -64,7 +58,9 @@ function saveNotesToLocalStorage() {
     });
     let myJSON = JSON.stringify(toStoreArray);
     localStorage.setItem(notekey, myJSON);
-    document.getElementById(lastSavedID).innerText = lastSavedText + prettyDate2(Date.now());
+    let time = new Date();
+    let formattedTime = time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+    document.getElementById(lastSavedID).innerText = lastSavedText + formattedTime;
 }
 
 // Finds the add btn on the document and add functionality to the btn's onclick attribute
